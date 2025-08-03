@@ -24,8 +24,14 @@ bunx jsr i @li0ard/kupyna
 ```
 
 ## Supported modes
-- [x] Hash function
-- [x] KMAC (MAC)
+- [x] Kupyna 48 bit
+- [x] Kupyna 256 bit
+- [x] Kupyna 304 bit
+- [x] Kupyna 384 bit
+- [x] Kupyna 512 bit
+- [x] Kupyna KMAC 256 bit
+- [x] Kupyna KMAC 384 bit
+- [x] Kupyna KMAC 512 bit
 
 ## Features
 - Provides simple and modern API
@@ -41,6 +47,12 @@ import { Kupyna256 } from "@li0ard/kupyna"
 let hash = new Kupyna256()
 hash.update(new TextEncoder().encode("hello world"))
 console.log(hash.digest())
+
+// OR
+
+import { kupyna256 } from "@li0ard/kupyna"
+
+console.log(kupyna256(new TextEncoder().encode("hello world")))
 ```
 
 ### Compute KMAC

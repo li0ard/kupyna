@@ -1,26 +1,12 @@
+import { type KupynaKMAC } from "../const";
 import { Kupyna256, Kupyna384, Kupyna512 } from "../index";
 import { uint64sToBytes } from "../utils";
 import { dpad, kpad32, kpad48, kpad64 } from "./pad";
 
-/**
- * Kupyna KMAC abstact
- * @abstract
- */
-export abstract class KupynaKMAC<T, H>  {
-    abstract h: H;
-    abstract ik: Uint8Array;
-    abstract len: bigint;
-    abstract _cloneInto(to?: T): T;
-    /** Clone KMAC instance */
-    abstract clone(): T;
-    /** Update KMAC buffer */
-    abstract update(data: Uint8Array): T;
-    /** Finalize KMAC computation and return result as Uint8Array */
-    abstract digest(): Uint8Array;
-}
-
 /** Kupyna KMAC (256 bit version) */
 export class KupynaKMAC256 implements KupynaKMAC<KupynaKMAC256, Kupyna256> {
+    outputLen: number;
+    blockLen: number;
     h: Kupyna256;
     ik: Uint8Array;
     len: bigint;
@@ -31,6 +17,8 @@ export class KupynaKMAC256 implements KupynaKMAC<KupynaKMAC256, Kupyna256> {
     constructor(public key: Uint8Array) {
         this.len = 0n;
         this.h = Kupyna256.create();
+        this.outputLen = this.h.outputLen
+        this.blockLen = this.h.blockLen
         if(key.length != this.h.outputLen) throw new Error("Invalid key length");
 
         this.h.update(key);
@@ -71,7 +59,9 @@ export class KupynaKMAC256 implements KupynaKMAC<KupynaKMAC256, Kupyna256> {
 }
 
 /** Kupyna KMAC (512 bit version) */
-export class KupynaKMAC512  implements KupynaKMAC<KupynaKMAC512, Kupyna512> {
+export class KupynaKMAC512 implements KupynaKMAC<KupynaKMAC512, Kupyna512> {
+    outputLen: number;
+    blockLen: number;
     h: Kupyna512;
     ik: Uint8Array;
     len: bigint;
@@ -82,6 +72,8 @@ export class KupynaKMAC512  implements KupynaKMAC<KupynaKMAC512, Kupyna512> {
     constructor(public key: Uint8Array) {
         this.len = 0n;
         this.h = Kupyna512.create();
+        this.outputLen = this.h.outputLen
+        this.blockLen = this.h.blockLen
         if(key.length != this.h.outputLen) throw new Error("Invalid key length")
         
         this.h.update(key);
@@ -123,6 +115,8 @@ export class KupynaKMAC512  implements KupynaKMAC<KupynaKMAC512, Kupyna512> {
 
 /** Kupyna KMAC (384 bit version) */
 export class KupynaKMAC384 implements KupynaKMAC<KupynaKMAC384, Kupyna384> {
+    outputLen: number;
+    blockLen: number;
     h: Kupyna384;
     ik: Uint8Array;
     len: bigint;
@@ -133,6 +127,8 @@ export class KupynaKMAC384 implements KupynaKMAC<KupynaKMAC384, Kupyna384> {
     constructor(public key: Uint8Array) {
         this.len = 0n;
         this.h = Kupyna384.create();
+        this.outputLen = this.h.outputLen
+        this.blockLen = this.h.blockLen
         if(key.length != this.h.outputLen) throw new Error("Invalid key length")
         
         this.h.update(key);

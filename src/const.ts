@@ -1,3 +1,45 @@
+/**
+ * Kupyna and KMAC abstract class (`@noble/hashes`-like methods)
+ * @abstract
+ */
+export abstract class KupynaAndKMAC<T> {
+    /** Output length */
+    abstract outputLen: number;
+    /** Block length */
+    abstract blockLen: number;
+
+    /** Clone hash instance */
+    abstract clone(): T;
+
+    /** Update hash buffer */
+    abstract update(p: Uint8Array): T
+
+    /** Finalize hash computation and return result as Uint8Array */
+    abstract digest(): Uint8Array;
+}
+
+/**
+ * Kupyna abstract class
+ * @abstract
+ */
+export abstract class Kupyna<T> extends KupynaAndKMAC<T> {
+    abstract s: BigUint64Array;
+    abstract x: Uint8Array;
+    abstract nx: number;
+    abstract len: bigint;
+}
+
+/**
+ * Kupyna KMAC abstact
+ * @abstract
+ */
+export abstract class KupynaKMAC<T, H> extends KupynaAndKMAC<T>  {
+    abstract h: H;
+    abstract ik: Uint8Array;
+    abstract len: bigint;
+}
+
+/** Replacement table No. 1 for nonlinear bi-objective reflection */
 export const T0: Readonly<BigUint64Array> = new BigUint64Array([
     0xa832a829d77f9aa8n, 0x4352432297d41143n, 0x5f3e5fc2df80615fn, 0x061e063014121806n,
     0x6bda6b7f670cb16bn, 0x75bc758f2356c975n, 0x6cc16c477519ad6cn, 0x592059f2cb927959n,
@@ -65,6 +107,7 @@ export const T0: Readonly<BigUint64Array> = new BigUint64Array([
     0x7c917cc71569ed7cn, 0x8b9d8b2c1d96168bn, 0x5613568ae9bf4556n, 0x80ba807427a73a80n,
 ]);
 
+/** Replacement table No. 2 for nonlinear bi-objective reflection */
 export const T1: Readonly<BigUint64Array> = new BigUint64Array([
     0xd1ce3e9e501fcecen, 0x6dbbb1bd06d6bbbbn, 0x60eb0b40ab8bebebn, 0xe092e44bd9729292n,
     0x65ea0346ac8feaean, 0xc0cb16804b0bcbcbn, 0x5f13986a794c1313n, 0xe2c146bc7d23c1c1n,
@@ -132,6 +175,7 @@ export const T1: Readonly<BigUint64Array> = new BigUint64Array([
     0xfcc776a86f3bc7c7n, 0xe7c04eba7a27c0c0n, 0x8d2955f6dfa42929n, 0xacd7f6c81f7bd7d7n,
 ]);
 
+/** Replacement table No. 3 for nonlinear bi-objective reflection */
 export const T2: Readonly<BigUint64Array> = new BigUint64Array([
     0x93ec4dde769393e5n, 0xd986ec3543d9d99an, 0x9aa47be1529a9ac8n, 0xb5c1992ceeb5b55bn,
     0x98b477ef5a9898c2n, 0x220dccee882222aan, 0x451283c60945454cn, 0xfcb332ced7fcfc2bn,
@@ -199,6 +243,7 @@ export const T2: Readonly<BigUint64Array> = new BigUint64Array([
     0xf8932ad2c7f8f83fn, 0x0c602824300c0c3cn, 0x74872551cd7474b9n, 0x671f4f28816767e6n,
 ]);
 
+/** Replacement table No. 4 for nonlinear bi-objective reflection */
 export const T3: Readonly<BigUint64Array> = new BigUint64Array([
     0x676d05bd6868d568n, 0x1c09840e8d8d838dn, 0x1e864c0fcacac5can, 0x52b3fe294d4d644dn,
     0xbf3744d17373a273n, 0x62a7ec314b4b7a4bn, 0x4ab9f7254e4e6b4en, 0x4dfcd6a82a2a822an,
@@ -266,6 +311,7 @@ export const T3: Readonly<BigUint64Array> = new BigUint64Array([
     0x82efb84157571657n, 0xd85a416c1b1b771bn, 0x537a9aa7e0e047e0n, 0x2f5b3a996161f861n,
 ]);
 
+/** Replacement table No. 5 for nonlinear bi-objective reflection */
 export const T4: Readonly<BigUint64Array> = new BigUint64Array([
     0xd77f9aa8a832a829n, 0x97d4114343524322n, 0xdf80615f5f3e5fc2n, 0x14121806061e0630n,
     0x670cb16b6bda6b7fn, 0x2356c97575bc758fn, 0x7519ad6c6cc16c47n, 0xcb927959592059f2n,
@@ -333,6 +379,7 @@ export const T4: Readonly<BigUint64Array> = new BigUint64Array([
     0x1569ed7c7c917cc7n, 0x1d96168b8b9d8b2cn, 0xe9bf45565613568an, 0x27a73a8080ba8074n,
 ]);
 
+/** Replacement table No. 6 for nonlinear bi-objective reflection */
 export const T5: Readonly<BigUint64Array> = new BigUint64Array([
     0x501fceced1ce3e9en, 0x06d6bbbb6dbbb1bdn, 0xab8bebeb60eb0b40n, 0xd9729292e092e44bn,
     0xac8feaea65ea0346n, 0x4b0bcbcbc0cb1680n, 0x794c13135f13986an, 0x7d23c1c1e2c146bcn,
@@ -400,6 +447,7 @@ export const T5: Readonly<BigUint64Array> = new BigUint64Array([
     0x6f3bc7c7fcc776a8n, 0x7a27c0c0e7c04eban, 0xdfa429298d2955f6n, 0x1f7bd7d7acd7f6c8n,
 ]);
 
+/** Replacement table No. 7 for nonlinear bi-objective reflection */
 export const T6: Readonly<BigUint64Array> = new BigUint64Array([
     0x769393e593ec4dden, 0x43d9d99ad986ec35n, 0x529a9ac89aa47be1n, 0xeeb5b55bb5c1992cn,
     0x5a9898c298b477efn, 0x882222aa220dcceen, 0x0945454c451283c6n, 0xd7fcfc2bfcb332cen,
@@ -467,6 +515,7 @@ export const T6: Readonly<BigUint64Array> = new BigUint64Array([
     0xc7f8f83ff8932ad2n, 0x300c0c3c0c602824n, 0xcd7474b974872551n, 0x816767e6671f4f28n,
 ]);
 
+/** Replacement table No. 8 for nonlinear bi-objective reflection */
 export const T7: Readonly<BigUint64Array> = new BigUint64Array([
     0x6868d568676d05bdn, 0x8d8d838d1c09840en, 0xcacac5ca1e864c0fn, 0x4d4d644d52b3fe29n,
     0x7373a273bf3744d1n, 0x4b4b7a4b62a7ec31n, 0x4e4e6b4e4ab9f725n, 0x2a2a822a4dfcd6a8n,
