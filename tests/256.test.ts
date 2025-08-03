@@ -1,4 +1,4 @@
-import { hexToBytes } from "@noble/hashes/utils";
+import { hexToBytes } from "../src/utils";
 import { describe, test, expect } from "bun:test";
 import { Kupyna256 } from "../src";
 
